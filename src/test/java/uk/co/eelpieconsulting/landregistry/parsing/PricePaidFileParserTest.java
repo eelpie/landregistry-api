@@ -2,6 +2,7 @@ package uk.co.eelpieconsulting.landregistry.parsing;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -17,8 +18,9 @@ public class PricePaidFileParserTest {
 	@Test
 	public void canParseFile() throws Exception {		
 		final PricePaidFileParser parser = new PricePaidFileParser();
-		
-		final List<PricePaidLine> lines = parser.parsePriceDataFile("ppms-june-with-columns.csv");
+	
+		final File file = new File(this.getClass().getClassLoader().getResource("ppms-june-with-columns.csv").getFile());		
+		final List<PricePaidLine> lines = parser.parsePriceDataFile(file);
 		
 		assertEquals(54675, lines.size());		
 				

@@ -1,5 +1,7 @@
 package uk.co.eelpieconsulting.landregistry.parsing;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.ParseException;
@@ -48,11 +50,11 @@ public class PricePaidFileParser {
 		recordStatuses.put("D", RecordStatus.DELETED);
 	}
 	
-	public List<PricePaidLine> parsePriceDataFile(String filename) throws IOException, ParseException {
-		log.info("Parsing input: " + filename);		
+	public List<PricePaidLine> parsePriceDataFile(File file) throws IOException, ParseException {
+		log.info("Parsing input: " + file.getAbsolutePath());		
 		final List<PricePaidLine> lines = new ArrayList<PricePaidLine>();
 		
-	    final CSVReader reader = new CSVReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream(filename)));
+	    final CSVReader reader = new CSVReader(new InputStreamReader(new FileInputStream(file)));
 	    String [] nextLine;
 	    while ((nextLine = reader.readNext()) != null) {
 	    	
