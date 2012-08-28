@@ -2,6 +2,7 @@ package uk.co.eelpieconsulting.landregistry.model;
 
 import java.util.Date;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import uk.co.eelpieconsulting.common.views.rss.RssFeedable;
@@ -136,16 +137,19 @@ public class PricePaid implements RssFeedable {
 		return longitude;
 	}
 	
+	@JsonIgnore
 	@Override
 	public String getDescription() {
 		return SOAN + " " + POAN + " " + street + " " + locality + " " + district + " " + borough + " " + county + " " + postcode;
 	}
 
+	@JsonIgnore
 	@Override
 	public String getHeadline() {
 		return SOAN + " " + POAN + " " + street + " " + locality + " " + district + " - £" + price;
 	}
 
+	@JsonIgnore
 	@Override
 	public String getWebUrl() {
 		return "http://localhost:8080/landregistry-api-1.0/pricepaid/" + id;
