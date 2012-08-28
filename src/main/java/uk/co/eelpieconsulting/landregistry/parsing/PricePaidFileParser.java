@@ -28,6 +28,7 @@ public class PricePaidFileParser {
 	private final static Logger log = Logger.getLogger(PricePaidFileParser.class);
 	
 	private final static DateTimeFormatter DATE_FORMAT = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
+	private final static DateTimeFormatter ALTERNATIVE_DATE_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
 
 	private Map<String, PropertyType> propertyTypes;
 	private Map<String, Duration> durationTypes;
@@ -87,8 +88,12 @@ public class PricePaidFileParser {
 		return idWithBrackets.replace("{", "").replace("}", "");
 	}
 
-	private Date parseDate(String dateString) throws ParseException {
-		return DATE_FORMAT.parseDateTime(dateString).toDate();
+	private Date parseDate(String dateString) {
+		try {
+			return DATE_FORMAT.parseDateTime(dateString).toDate();
+		} catch (IllegalArgumentException e) {
+			return ALTERNATIVE_DATE_FORMAT.parseDateTime(dateString).toDate();
+		}
 	}
 	
 	private int parsePrice(String priceWithCommas) {

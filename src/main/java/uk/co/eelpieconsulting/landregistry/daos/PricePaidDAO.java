@@ -33,7 +33,6 @@ public class PricePaidDAO {
 
 	public List<PricePaid> getAll() {
 		final Query<PricePaid> all = datastore.createQuery(PricePaid.class);
-		all.limit(20);
 		return all.asList();
 	}
 	

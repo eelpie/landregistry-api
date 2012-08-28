@@ -1,11 +1,13 @@
 package uk.co.eelpieconsulting.landregistry.parsing;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.junit.Before;
 import org.junit.Test;
 
 import uk.co.eelpieconsulting.landregistry.model.PricePaidLine;
@@ -15,9 +17,14 @@ import uk.co.eelpieconsulting.landregistry.parsing.PricePaidFileParser;
 
 public class PricePaidFileParserTest {
 
+	private PricePaidFileParser parser;
+
+	@Before
+	public void setup() {
+		parser = new PricePaidFileParser();
+	}
 	@Test
 	public void canParseFile() throws Exception {		
-		final PricePaidFileParser parser = new PricePaidFileParser();
 	
 		final File file = new File(this.getClass().getClassLoader().getResource("ppms-june-with-columns.csv").getFile());		
 		final List<PricePaidLine> lines = parser.parsePriceDataFile(file);
@@ -53,6 +60,12 @@ public class PricePaidFileParserTest {
 		assertEquals("COLCHESTER", lineWithAllAddressFields.getDistrict());
 		assertEquals("COLCHESTER", lineWithAllAddressFields.getBorough());
 		assertEquals("ESSEX", lineWithAllAddressFields.getCounty());
+	}
+	
+	@Test
+	public void canParseFileContainingHourMinuteSecondDateFormat() throws Exception {
+		final File file = new File(this.getClass().getClassLoader().getResource("PPMS_0312.csv").getFile());		
+		parser.parsePriceDataFile(file);
 	}
 	
 }
