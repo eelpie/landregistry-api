@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import uk.co.eelpieconsulting.common.geo.LatLong;
 import uk.co.eelpieconsulting.landregistry.daos.PricePaidDAO;
 import uk.co.eelpieconsulting.landregistry.model.PricePaid;
 import uk.co.eelpieconsulting.landregistry.model.PricePaidLine;
@@ -17,12 +18,14 @@ public class PricePaidImportService {
 	
 	private PricePaidFileFinder pricePaidFileFinder;
 	private PricePaidFileParser pricePaidFileParser;
+	private PostcodeService postcodeService;
 	private PricePaidDAO pricePaidDAO;
 	
 	@Autowired
-	public PricePaidImportService(PricePaidFileFinder pricePaidFileFinder, PricePaidFileParser pricePaidFileParser, PricePaidDAO pricePaidDAO) {
+	public PricePaidImportService(PricePaidFileFinder pricePaidFileFinder, PricePaidFileParser pricePaidFileParser, PostcodeService postcodeService, PricePaidDAO pricePaidDAO) {
 		this.pricePaidFileFinder = pricePaidFileFinder;
 		this.pricePaidFileParser = pricePaidFileParser;
+		this.postcodeService = postcodeService;
 		this.pricePaidDAO = pricePaidDAO;
 	}
 	
@@ -33,8 +36,19 @@ public class PricePaidImportService {
 		for (File file : filesToParser) {
 			List<PricePaidLine> lines = pricePaidFileParser.parsePriceDataFile(file);
 			for (PricePaidLine line : lines) {
-				pricePaidDAO.save(new PricePaid(line.getId(), line.getPrice(), line.getDate(), line.getPostcode(), line.getType(), line.isNewBuild(), line.getDuration(), line.getPOAN(), line.getSOAN(), line.getStreet(), line.getLocality(), line.getDistrict(), line.getBorough(), line.getCounty()));
-			}			
+				
+				final LatLong latLong = postcodeService.getLatLongFor(line.getPostcode());
+				System.out.println(latLong);
+				final Double latitude = latLong != null ? latLong.getLatitude() : null;
+				final Double longitude =  latLong != null ? latLong.getLongitude() : null;
+				
+				pricePaidDAO.save(new PricePaid(line.getId(), line.getPrice(),
+						line.getDate(), line.getPostcode(), line.getType(),
+						line.isNewBuild(), line.getDuration(), line.getPOAN(),
+						line.getSOAN(), line.getStreet(), line.getLocality(),
+						line.getDistrict(), line.getBorough(),
+						line.getCounty(), latitude, longitude));
+			}
 		}
 	}
 	

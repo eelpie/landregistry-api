@@ -2,8 +2,14 @@ package uk.co.eelpieconsulting.landregistry.model;
 
 import java.util.Date;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+import uk.co.eelpieconsulting.landregistry.views.DateOnlySerializer;
+
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
+import com.google.code.morphia.annotations.Indexed;
+import com.google.code.morphia.utils.IndexDirection;
 
 @Entity("pricepaid")
 public class PricePaid {
@@ -12,7 +18,10 @@ public class PricePaid {
 	private String id;
 	
 	private int price;
+	
+	@JsonSerialize(using = DateOnlySerializer.class)
 	private Date date;
+	
 	private String postcode;
 	private PropertyType type;
 	private boolean newBuild;
@@ -25,13 +34,19 @@ public class PricePaid {
 	private String borough;
 	private String county;
 	
+	@Indexed(IndexDirection.GEO2D)
+    private double[] location;
+
+	private Double latitude;
+	private Double longitude;
+	
 	public PricePaid() {
 	}
 	
 	public PricePaid(String id, int price, Date date, String postcode,
 			PropertyType type, boolean newBuild, Duration duration,
 			String POAN, String SOAN, String street, String locality,
-			String district, String borough, String county) {
+			String district, String borough, String county, Double latitude, Double longitude) {
 		this.id = id;
 		this.price = price;
 		this.date = date;
@@ -46,8 +61,16 @@ public class PricePaid {
 		this.district = district;
 		this.borough = borough;
 		this.county = county;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		
+		if (latitude != null && longitude != null) {
+		  this.location = new double[2];
+          this.location[0] = latitude;
+          this.location[1] = longitude;
+		}
 	}
-
+	
 	public String getId() {
 		return id;
 	}
@@ -103,6 +126,14 @@ public class PricePaid {
 	public String getCounty() {
 		return county;
 	}
+	
+	public Double getLatitude() {
+		return latitude;
+	}
+
+	public Double getLongitude() {
+		return longitude;
+	}
 
 	@Override
 	public String toString() {
@@ -111,7 +142,8 @@ public class PricePaid {
 				+ newBuild + ", duration=" + duration + ", POAN=" + POAN
 				+ ", SOAN=" + SOAN + ", street=" + street + ", locality="
 				+ locality + ", district=" + district + ", borough=" + borough
-				+ ", county=" + county + "]";
+				+ ", county=" + county + ", latitude=" + latitude
+				+ ", longitude=" + longitude + "]";
 	}
 	
 }

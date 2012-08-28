@@ -6,6 +6,7 @@ import java.text.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import uk.co.eelpieconsulting.common.views.ViewFactory;
@@ -27,6 +28,14 @@ public class SearchController {
 	public ModelAndView search() throws IOException, ParseException  {
 		final ModelAndView mv = new ModelAndView(viewFactory.getJsonView());		
 		mv.addObject("data", pricePaidDAO.getAll());
+		return mv;
+	}
+	
+	@RequestMapping("/near")
+	public ModelAndView near(@RequestParam(value = "latitude", required = true) double latitude,
+			@RequestParam(value = "longitude", required = true) double longitude) {
+		final ModelAndView mv = new ModelAndView(viewFactory.getJsonView());
+		mv.addObject("data", pricePaidDAO.near(latitude, longitude));
 		return mv;
 	}
 	

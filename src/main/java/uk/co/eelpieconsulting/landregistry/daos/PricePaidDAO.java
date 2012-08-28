@@ -15,8 +15,10 @@ import com.mongodb.MongoException;
 @Component
 public class PricePaidDAO {
 			
+	private static final double NEAR_RADIUS = 0.02;
+	
 	private final Datastore datastore;
-
+	
 	@Autowired
 	public PricePaidDAO(DataSourceFactory dataSourceFactory) throws UnknownHostException, MongoException {
 		this.datastore = dataSourceFactory.getDatastore();
@@ -34,6 +36,13 @@ public class PricePaidDAO {
 	public List<PricePaid> getAll() {
 		final Query<PricePaid> all = datastore.createQuery(PricePaid.class);
 		return all.asList();
+	}
+
+	public List<PricePaid> near(double latitude, double longitude) {
+	    final Query<PricePaid> query = datastore.createQuery(PricePaid.class).
+                field("location").within(latitude, longitude, NEAR_RADIUS).
+                order("-date");
+	    return query.asList();
 	}
 	
 }
