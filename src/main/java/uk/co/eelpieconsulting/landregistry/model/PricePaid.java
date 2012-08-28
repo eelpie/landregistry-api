@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import uk.co.eelpieconsulting.common.views.rss.RssFeedable;
 import uk.co.eelpieconsulting.landregistry.views.DateOnlySerializer;
 
 import com.google.code.morphia.annotations.Entity;
@@ -12,7 +13,7 @@ import com.google.code.morphia.annotations.Indexed;
 import com.google.code.morphia.utils.IndexDirection;
 
 @Entity("pricepaid")
-public class PricePaid {
+public class PricePaid implements RssFeedable {
 
 	@Id
 	private String id;
@@ -134,7 +135,22 @@ public class PricePaid {
 	public Double getLongitude() {
 		return longitude;
 	}
+	
+	@Override
+	public String getDescription() {
+		return SOAN + " " + POAN + " " + street + " " + locality + " " + district + " " + borough + " " + county + " " + postcode;
+	}
 
+	@Override
+	public String getHeadline() {
+		return SOAN + " " + POAN + " " + street + " " + locality + " " + district + " - £" + price;
+	}
+
+	@Override
+	public String getWebUrl() {
+		return "http://localhost:8080/landregistry-api-1.0/pricepaid/" + id;
+	}
+	
 	@Override
 	public String toString() {
 		return "PricePaid [id=" + id + ", price=" + price + ", date=" + date
