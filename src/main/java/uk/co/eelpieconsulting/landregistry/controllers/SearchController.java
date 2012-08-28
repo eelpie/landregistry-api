@@ -46,7 +46,7 @@ public class SearchController {
 	
 	private View getRssViewFor(double latitude, double longitude) {
 		final String title = "Prices paid near " + latitude + ", " + longitude;
-		return viewFactory.getRssView(title, title, "http://www.landregistry.gov.uk/public/information/public-data/price-paid-data");
+		return viewFactory.getRssView(title, "http://www.landregistry.gov.uk/public/information/public-data/price-paid-data", title);
 	}
 	
 }
