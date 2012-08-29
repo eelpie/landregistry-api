@@ -44,5 +44,9 @@ public class PricePaidDAO {
                 order("-date");
 	    return query.asList();
 	}
+
+	public void delete(String id) {
+		datastore.delete(PricePaid.class, id);
+	}
 	
 }

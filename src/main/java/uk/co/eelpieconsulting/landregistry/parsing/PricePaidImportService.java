@@ -13,6 +13,7 @@ import uk.co.eelpieconsulting.common.geo.LatLong;
 import uk.co.eelpieconsulting.landregistry.daos.PricePaidDAO;
 import uk.co.eelpieconsulting.landregistry.model.PricePaid;
 import uk.co.eelpieconsulting.landregistry.model.PricePaidLine;
+import uk.co.eelpieconsulting.landregistry.model.RecordStatus;
 
 @Component
 public class PricePaidImportService {
@@ -58,8 +59,18 @@ public class PricePaidImportService {
 						line.getDistrict(), line.getBorough(),
 						line.getCounty(), latitude, longitude);
 
-				log.info("Saving: " + pricePaid.toString());
-				pricePaidDAO.save(pricePaid);
+				if (line.getRecordStatus() == RecordStatus.ADDED) {
+					log.info("Saving: " + pricePaid.toString());
+					pricePaidDAO.save(pricePaid);
+				
+				} else if (line.getRecordStatus() == RecordStatus.CHANGED) { 
+					log.info("Saving update to: " + pricePaid.toString());
+					pricePaidDAO.save(pricePaid);
+					
+				} else if (line.getRecordStatus() == RecordStatus.DELETED) {
+					log.info("Deleting: " + pricePaid.toString());
+					pricePaidDAO.delete(pricePaid.getId());
+				}
 			}
 		}
 		
