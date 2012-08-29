@@ -51,12 +51,15 @@ public class PricePaidImportService {
 				final Double latitude = latLong != null ? latLong.getLatitude() : null;
 				final Double longitude =  latLong != null ? latLong.getLongitude() : null;
 				
-				pricePaidDAO.save(new PricePaid(line.getId(), line.getPrice(),
+				final PricePaid pricePaid = new PricePaid(line.getId(), line.getPrice(),
 						line.getDate(), line.getPostcode(), line.getType(),
 						line.isNewBuild(), line.getDuration(), line.getPOAN(),
 						line.getSOAN(), line.getStreet(), line.getLocality(),
 						line.getDistrict(), line.getBorough(),
-						line.getCounty(), latitude, longitude));
+						line.getCounty(), latitude, longitude);
+
+				log.info("Saving: " + pricePaid.toString());
+				pricePaidDAO.save(pricePaid);
 			}
 		}
 		
