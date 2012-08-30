@@ -60,11 +60,11 @@ public class PricePaidImportService {
 						line.getCounty(), latitude, longitude);
 
 				if (line.getRecordStatus() == RecordStatus.ADDED) {
-					log.info("Saving: " + pricePaid.toString());
+					log.debug("Adding: " + pricePaid.toString());
 					pricePaidDAO.save(pricePaid);
 				
 				} else if (line.getRecordStatus() == RecordStatus.CHANGED) { 
-					log.info("Saving update to: " + pricePaid.toString());
+					log.info("Changing: " + pricePaid.toString());
 					pricePaidDAO.save(pricePaid);
 					
 				} else if (line.getRecordStatus() == RecordStatus.DELETED) {
@@ -75,7 +75,6 @@ public class PricePaidImportService {
 		}
 		
 		log.info("Import complete");
-
 	}
 	
 }
