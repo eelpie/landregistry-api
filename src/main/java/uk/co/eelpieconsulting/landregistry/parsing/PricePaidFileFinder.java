@@ -3,6 +3,7 @@ package uk.co.eelpieconsulting.landregistry.parsing;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -18,9 +19,15 @@ public class PricePaidFileFinder {
 	public PricePaidFileFinder() {
 	}
 	
+	public void setImportFolder(String importFolder) {
+		this.importFolder = importFolder;
+	}
+
 	public List<File> getFilesInAscendingOrder() {
-		Collection<File> listFiles = FileUtils.listFiles(new File(importFolder), new String[] {"csv"}, false);
-		return new ArrayList<File>(listFiles);	
+		final Collection<File> files = FileUtils.listFiles(new File(importFolder), new String[] {"csv"}, false);
+		final ArrayList<File> fileList = new ArrayList<File>(files);
+		Collections.sort(fileList);
+		return fileList;	
 	}
 	
 }
