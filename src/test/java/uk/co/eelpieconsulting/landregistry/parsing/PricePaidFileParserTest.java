@@ -67,4 +67,13 @@ public class PricePaidFileParserTest {
 		parser.parsePriceDataFile(file);
 	}
 	
+	@Test
+	public void canParseNonStandardPriceFields() throws Exception {
+		final File file = new File(this.getClass().getClassLoader().getResource("ppms-201207-with-columns.csv").getFile());		
+		
+		final List<PricePaidLine> lines = parser.parsePriceDataFile(file);
+
+		assertEquals(28134500, lines.get(0).getPrice());
+	}
+	
 }

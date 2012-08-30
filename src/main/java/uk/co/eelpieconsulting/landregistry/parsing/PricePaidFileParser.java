@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.stereotype.Component;
@@ -29,6 +30,8 @@ public class PricePaidFileParser {
 	
 	private final static DateTimeFormatter DATE_FORMAT = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
 	private final static DateTimeFormatter ALTERNATIVE_DATE_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+	private final static DateTimeFormatter YET_ANOTHER_DATE_FORMAT = DateTimeFormat.forPattern("dd/MM/yyyy");
+
 
 	private Map<String, PropertyType> propertyTypes;
 	private Map<String, Duration> durationTypes;
@@ -84,20 +87,25 @@ public class PricePaidFileParser {
 		return lines;
 	}
 
-	private String parseId(String idWithBrackets) {
+	private String parseId(String idWithBrackets) {		
 		return idWithBrackets.replace("{", "").replace("}", "");
 	}
 
 	private Date parseDate(String dateString) {
-		try {
-			return DATE_FORMAT.parseDateTime(dateString).toDate();
-		} catch (IllegalArgumentException e) {
-			return ALTERNATIVE_DATE_FORMAT.parseDateTime(dateString).toDate();
+		DateTimeFormatter[] formats = new DateTimeFormatter[]{DATE_FORMAT, ALTERNATIVE_DATE_FORMAT, YET_ANOTHER_DATE_FORMAT};
+		for (DateTimeFormatter dateTimeFormatter : formats) {
+			try {
+				DateTime dateTime = dateTimeFormatter.parseDateTime(dateString);
+				return dateTime.toDate();
+			} catch (IllegalArgumentException e) {			
+			}
 		}
+		
+		throw new IllegalArgumentException("Date is not in any of the expected formats");
 	}
 	
 	private int parsePrice(String priceWithCommas) {
-		return Integer.parseInt(priceWithCommas.replaceAll(",", ""));
+		return Integer.parseInt(priceWithCommas.replaceAll(",", "").replaceAll("\\D", ""));
 	}
 	
 	private PropertyType parseType(String typeString) {
