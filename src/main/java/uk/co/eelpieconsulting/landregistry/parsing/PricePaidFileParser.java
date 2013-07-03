@@ -30,8 +30,8 @@ public class PricePaidFileParser {
 	
 	private final static DateTimeFormatter DATE_FORMAT = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
 	private final static DateTimeFormatter ALTERNATIVE_DATE_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+	private final static DateTimeFormatter YET_ANOTHER_INCONSISTANT_DATE_FORMAT = DateTimeFormat.forPattern("dd/MM/yy");
 	private final static DateTimeFormatter YET_ANOTHER_DATE_FORMAT = DateTimeFormat.forPattern("dd/MM/yyyy");
-
 
 	private Map<String, PropertyType> propertyTypes;
 	private Map<String, Duration> durationTypes;
@@ -92,7 +92,7 @@ public class PricePaidFileParser {
 	}
 
 	private Date parseDate(String dateString) {
-		DateTimeFormatter[] formats = new DateTimeFormatter[]{DATE_FORMAT, ALTERNATIVE_DATE_FORMAT, YET_ANOTHER_DATE_FORMAT};
+		DateTimeFormatter[] formats = new DateTimeFormatter[]{DATE_FORMAT,  ALTERNATIVE_DATE_FORMAT, YET_ANOTHER_INCONSISTANT_DATE_FORMAT, YET_ANOTHER_DATE_FORMAT};
 		for (DateTimeFormatter dateTimeFormatter : formats) {
 			try {
 				DateTime dateTime = dateTimeFormatter.parseDateTime(dateString);

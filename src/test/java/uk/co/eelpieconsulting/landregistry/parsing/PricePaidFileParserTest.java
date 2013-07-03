@@ -1,6 +1,7 @@
 package uk.co.eelpieconsulting.landregistry.parsing;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.util.List;
@@ -64,7 +65,11 @@ public class PricePaidFileParserTest {
 	@Test
 	public void canParseFileContainingHourMinuteSecondDateFormat() throws Exception {
 		final File file = new File(this.getClass().getClassLoader().getResource("ppms-201203-with-columns.csv").getFile());		
-		parser.parsePriceDataFile(file);
+
+		List<PricePaidLine> lines = parser.parsePriceDataFile(file);
+		
+		assertEquals(new DateTime(2012, 3, 15, 0, 0, 0).toDate(), lines.get(0).getDate());
+
 	}
 	
 	@Test
@@ -74,6 +79,21 @@ public class PricePaidFileParserTest {
 		final List<PricePaidLine> lines = parser.parsePriceDataFile(file);
 
 		assertEquals(28134500, lines.get(0).getPrice());
+	}
+	
+	@Test
+	public void canParseTwoDigitYearDateFormatRows() throws Exception {
+		final File file = new File(this.getClass().getClassLoader().getResource("ppms-201207-with-columns.csv").getFile());		
+		
+		final List<PricePaidLine> lines = parser.parsePriceDataFile(file);
+		
+		for (PricePaidLine pricePaidLine : lines) {
+			if (pricePaidLine.getId().equals("FD7A2997-E3EE-4615-B82D-22E38005F984")) {				
+				assertEquals(new DateTime(2000, 8, 30, 0, 0, 0).toDate(), pricePaidLine.getDate());
+				return;
+			}
+		}
+		fail("Expected row not found");
 	}
 	
 }
