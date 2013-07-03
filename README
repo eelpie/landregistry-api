@@ -1,4 +1,4 @@
-A basic mongo/spring JSON API for the Land Registrys' price paid data
+A basic mongo/spring JSON API for the Land Registry price paid data
 (http://www.landregistry.gov.uk/market-trend-data/public-data/price-paid-data).
 
 Attempts to deal correctly with changes and deletes to existing data found in later CSV files.
