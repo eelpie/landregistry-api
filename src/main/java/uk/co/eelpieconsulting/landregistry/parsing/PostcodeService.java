@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import uk.co.eelpieconsulting.common.geo.model.LatLong;
 import uk.co.eelpieconsulting.common.http.HttpFetchException;
 import uk.co.eelpieconsulting.common.http.HttpFetcher;
+import uk.co.eelpieconsulting.common.http.HttpNotFoundException;
 
 @Component
 public class PostcodeService {
@@ -31,6 +32,9 @@ public class PostcodeService {
 			final JSONObject jsonObject = new JSONObject(json);
 			return new LatLong(jsonObject.getDouble("latitude"), jsonObject.getDouble("longitude"));
 			
+		} catch (HttpNotFoundException e) {	
+			log.warn("Unknown postcode; ignoring: " + postcode);			
+			
 		} catch (HttpFetchException e) {
 			log.error(e);
 
@@ -39,7 +43,6 @@ public class PostcodeService {
 		}
 		
 		return null;
-		
 	}
 
 }
