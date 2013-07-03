@@ -1,0 +1,44 @@
+A basic mongo/spring JSON API for the Land Registrys' price paid data
+(http://www.landregistry.gov.uk/market-trend-data/public-data/price-paid-data).
+
+Attempts to deal correctly with changes and deletes to existing data found in later CSV files.
+
+
+End points:
+
+/sources
+Confirm which sources files are in use.
+
+/import
+Purge the contents of the database and import data from the source files.
+
+/near
+	latitude
+	longitude
+	format = json|rss
+
+ie.
+/near?latitude=51.454&longitude=-0.351&format=json
+
+[
+    {
+        "id": "09A39869-6656-47EC-8C73-1937B9D6A9A1",
+        "price": 162000,
+        "date": "2012-03-23",
+        "postcode": "TW7 7PR",
+        "type": "FLATSMAISONETTES",
+        "newBuild": false,
+        "duration": "LEASEHOLD",
+        "street": "HEATHER CLOSE",
+        "locality": "",
+        "district": "ISLEWORTH",
+        "borough": "HOUNSLOW",
+        "county": "GREATER LONDON",
+        "latLong": {
+            "latitude": 51.46124651202948,
+            "longitude": -0.34838172705302695
+        },
+        "poan": "7",
+        "soan": ""
+    }
+]
