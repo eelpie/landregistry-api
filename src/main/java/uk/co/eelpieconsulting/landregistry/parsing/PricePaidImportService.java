@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import uk.co.eelpieconsulting.common.geo.LatLong;
+import uk.co.eelpieconsulting.common.geo.model.LatLong;
 import uk.co.eelpieconsulting.landregistry.daos.PricePaidDAO;
 import uk.co.eelpieconsulting.landregistry.model.PricePaid;
 import uk.co.eelpieconsulting.landregistry.model.PricePaidLine;
@@ -49,15 +49,13 @@ public class PricePaidImportService {
 			for (PricePaidLine line : lines) {
 				
 				final LatLong latLong = postcodeService.getLatLongFor(line.getPostcode());
-				final Double latitude = latLong != null ? latLong.getLatitude() : null;
-				final Double longitude =  latLong != null ? latLong.getLongitude() : null;
 				
 				final PricePaid pricePaid = new PricePaid(line.getId(), line.getPrice(),
 						line.getDate(), line.getPostcode(), line.getType(),
 						line.isNewBuild(), line.getDuration(), line.getPOAN(),
 						line.getSOAN(), line.getStreet(), line.getLocality(),
 						line.getDistrict(), line.getBorough(),
-						line.getCounty(), latitude, longitude);
+						line.getCounty(), latLong);
 
 				if (line.getRecordStatus() == RecordStatus.ADDED) {
 					log.debug("Adding: " + pricePaid.toString());

@@ -1,10 +1,12 @@
 package uk.co.eelpieconsulting.landregistry.model;
 
+import java.util.Arrays;
 import java.util.Date;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import uk.co.eelpieconsulting.common.geo.model.LatLong;
 import uk.co.eelpieconsulting.common.views.rss.RssFeedable;
 import uk.co.eelpieconsulting.landregistry.views.DateOnlySerializer;
 
@@ -35,12 +37,10 @@ public class PricePaid implements RssFeedable {
 	private String district;
 	private String borough;
 	private String county;
+	private LatLong latLong;
 	
 	@Indexed(IndexDirection.GEO2D)
     private double[] location;
-
-	private Double latitude;
-	private Double longitude;
 	
 	public PricePaid() {
 	}
@@ -48,7 +48,7 @@ public class PricePaid implements RssFeedable {
 	public PricePaid(String id, int price, Date date, String postcode,
 			PropertyType type, boolean newBuild, Duration duration,
 			String POAN, String SOAN, String street, String locality,
-			String district, String borough, String county, Double latitude, Double longitude) {
+			String district, String borough, String county, LatLong latLong) {
 		this.id = id;
 		this.price = price;
 		this.date = date;
@@ -63,13 +63,12 @@ public class PricePaid implements RssFeedable {
 		this.district = district;
 		this.borough = borough;
 		this.county = county;
-		this.latitude = latitude;
-		this.longitude = longitude;
+		this.latLong = latLong;
 		
-		if (latitude != null && longitude != null) {
+		if (latLong != null) {
 		  this.location = new double[2];
-          this.location[0] = latitude;
-          this.location[1] = longitude;
+          this.location[0] = latLong.getLatitude();
+          this.location[1] = latLong.getLongitude();
 		}
 	}
 	
@@ -129,14 +128,6 @@ public class PricePaid implements RssFeedable {
 		return county;
 	}
 	
-	public Double getLatitude() {
-		return latitude;
-	}
-
-	public Double getLongitude() {
-		return longitude;
-	}
-	
 	@JsonIgnore
 	@Override
 	public String getDescription() {
@@ -155,6 +146,16 @@ public class PricePaid implements RssFeedable {
 		return "http://localhost:8080/landregistry-api-1.0/pricepaid/" + id;
 	}
 	
+	@JsonIgnore
+	@Override
+	public String getImageUrl() {
+		return null;
+	}
+	
+	public LatLong getLatLong() {
+		return latLong;
+	}
+
 	@Override
 	public String toString() {
 		return "PricePaid [id=" + id + ", price=" + price + ", date=" + date
@@ -162,8 +163,8 @@ public class PricePaid implements RssFeedable {
 				+ newBuild + ", duration=" + duration + ", POAN=" + POAN
 				+ ", SOAN=" + SOAN + ", street=" + street + ", locality="
 				+ locality + ", district=" + district + ", borough=" + borough
-				+ ", county=" + county + ", latitude=" + latitude
-				+ ", longitude=" + longitude + "]";
+				+ ", county=" + county + ", latLong=" + latLong + ", location="
+				+ Arrays.toString(location) + "]";
 	}
 	
 }

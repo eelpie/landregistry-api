@@ -11,7 +11,7 @@ public class PricePaidLine extends PricePaid {
 			String POAN, String SOAN, String street, String locality,
 			String district, String borough, String county, RecordStatus recordStatus) {
 		super(id, price, date, postcode, type, newBuild, duration, POAN, SOAN, street,
-				locality, district, borough, county, null, null);
+				locality, district, borough, county, null);
 		this.recordStatus = recordStatus;
 	}
 

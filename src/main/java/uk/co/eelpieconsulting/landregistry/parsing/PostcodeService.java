@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import uk.co.eelpieconsulting.common.geo.LatLong;
+import uk.co.eelpieconsulting.common.geo.model.LatLong;
 import uk.co.eelpieconsulting.common.http.HttpFetchException;
 import uk.co.eelpieconsulting.common.http.HttpFetcher;
 
@@ -27,7 +27,7 @@ public class PostcodeService {
 	public LatLong getLatLongFor(String postcode) {
 		final String id = postcode.replaceAll(" ", "");
 		try {
-			final String json = httpFetcher.fetchContent(apiUrl + "/postcode/" + id);			
+			final String json = httpFetcher.get(apiUrl + "/postcode/" + id);			
 			final JSONObject jsonObject = new JSONObject(json);
 			return new LatLong(jsonObject.getDouble("latitude"), jsonObject.getDouble("longitude"));
 			
