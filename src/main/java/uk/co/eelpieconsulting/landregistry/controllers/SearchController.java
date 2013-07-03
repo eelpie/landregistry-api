@@ -11,35 +11,58 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
 import uk.co.eelpieconsulting.common.files.FileInformationService;
+import uk.co.eelpieconsulting.common.geo.model.LatLong;
 import uk.co.eelpieconsulting.common.views.ViewFactory;
 import uk.co.eelpieconsulting.landregistry.daos.PricePaidDAO;
+import uk.co.eelpieconsulting.landregistry.parsing.PostcodeService;
 import uk.co.eelpieconsulting.landregistry.parsing.PricePaidFileFinder;
+
+import com.google.common.base.Strings;
 
 @Controller
 public class SearchController {
+
+	private static final double NEAR_RADIUS = 0.005;
 	
 	private final PricePaidDAO pricePaidDAO;
-	private PricePaidFileFinder pricePaidFileFinder;
+	private final PricePaidFileFinder pricePaidFileFinder;
+	private final FileInformationService fileInformationService;
+	private final PostcodeService postcodeService;
 	private final ViewFactory viewFactory;
-	private FileInformationService fileInformationService;
 	
 	@Autowired
-	public SearchController(PricePaidDAO pricePaidDAO, PricePaidFileFinder pricePaidFileFinder, ViewFactory viewFactory) {
+	public SearchController(PricePaidDAO pricePaidDAO, PricePaidFileFinder pricePaidFileFinder, PostcodeService postcodeService, ViewFactory viewFactory) {
 		this.pricePaidDAO = pricePaidDAO;
 		this.pricePaidFileFinder = pricePaidFileFinder;
+		this.postcodeService = postcodeService;
 		this.viewFactory = viewFactory;
 		fileInformationService = new FileInformationService();
 	}
 	
 	@RequestMapping("/near")
-	public ModelAndView near(@RequestParam(value = "latitude", required = true) double latitude,
-			@RequestParam(value = "longitude", required = true) double longitude,
+	public ModelAndView near(@RequestParam(value = "latitude", required = false) Double latitude,
+			@RequestParam(value = "longitude", required = false) Double longitude,
+			@RequestParam(value = "postcode", required = false) String postcode,
 			@RequestParam(value = "format", required = false) String format) {
 		
-		final View view = format != null && format.equals("rss") ? getRssViewFor(latitude, longitude) : viewFactory.getJsonView();
-		final ModelAndView mv = new ModelAndView(view);
+		LatLong latLong = null;
+		if (latitude != null && longitude != null) {
+			latLong = new LatLong(latitude, longitude);
+		} else {
+			if (!Strings.isNullOrEmpty(postcode)) {
+				latLong = postcodeService.getLatLongFor(postcode);
+				if (latLong == null) {
+					throw new RuntimeException("Unknown postcode");
+				}
+			}
+		}
+		if (latLong == null) {
+			throw new RuntimeException("No location given");
+		}
 		
-		mv.addObject("data", pricePaidDAO.near(latitude, longitude));
+		final View view = format != null && format.equals("rss") ? getRssViewFor(latLong) : viewFactory.getJsonView();
+		final ModelAndView mv = new ModelAndView(view);
+		mv.addObject("data", pricePaidDAO.near(latLong, NEAR_RADIUS));
 		return mv;
 	}
 	
@@ -50,8 +73,8 @@ public class SearchController {
 		return mv;
 	}
 		
-	private View getRssViewFor(double latitude, double longitude) {
-		final String title = "Prices paid near " + latitude + ", " + longitude;
+	private View getRssViewFor(LatLong latLong) {
+		final String title = "Prices paid near " + latLong.getLatitude() + ", " + latLong.getLongitude();
 		return viewFactory.getRssView(title, "http://www.landregistry.gov.uk/public/information/public-data/price-paid-data", title);
 	}
 	

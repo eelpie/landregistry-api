@@ -65,11 +65,11 @@ public class PricePaidImportService {
 					pricePaidDAO.save(pricePaid);
 				
 				} else if (line.getRecordStatus() == RecordStatus.CHANGED) { 
-					log.info("Changing: " + pricePaid.toString());
+					log.debug("Changing: " + pricePaid.toString());
 					pricePaidDAO.save(pricePaid);
 					
 				} else if (line.getRecordStatus() == RecordStatus.DELETED) {
-					log.info("Deleting: " + pricePaid.toString());
+					log.debug("Deleting: " + pricePaid.toString());
 					pricePaidDAO.delete(pricePaid.getId());
 				}
 			}

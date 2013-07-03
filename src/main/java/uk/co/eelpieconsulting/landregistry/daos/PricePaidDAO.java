@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import uk.co.eelpieconsulting.common.geo.model.LatLong;
 import uk.co.eelpieconsulting.landregistry.model.PricePaid;
 
 import com.google.code.morphia.Datastore;
@@ -14,8 +15,8 @@ import com.mongodb.MongoException;
 
 @Component
 public class PricePaidDAO {
-			
-	private static final double NEAR_RADIUS = 0.02;
+				
+	private static final String DATE_DESCENDING = "-date";
 	
 	private final Datastore datastore;
 	
@@ -38,10 +39,10 @@ public class PricePaidDAO {
 		return all.asList();
 	}
 
-	public List<PricePaid> near(double latitude, double longitude) {
+	public List<PricePaid> near(LatLong latLong, double radius) {
 	    final Query<PricePaid> query = datastore.createQuery(PricePaid.class).
-                field("location").within(latitude, longitude, NEAR_RADIUS).
-                order("-date");
+                field("location").within(latLong.getLatitude(), latLong.getLongitude(), radius).
+                order(DATE_DESCENDING);
 	    return query.asList();
 	}
 
