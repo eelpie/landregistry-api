@@ -28,14 +28,17 @@ public class PricePaidImportService {
 	private PricePaidFileFinder pricePaidFileFinder;
 	private PostcodeService postcodeService;
 	private PricePaidDAO pricePaidDAO;
+	private PricePaidLineParser pricePaidLineParser;
 	
 	private final boolean resolvePostcodes = false;
 	
 	@Autowired
-	public PricePaidImportService(PricePaidFileFinder pricePaidFileFinder, PostcodeService postcodeService, PricePaidDAO pricePaidDAO) {
+	public PricePaidImportService(PricePaidFileFinder pricePaidFileFinder, PostcodeService postcodeService,
+			PricePaidDAO pricePaidDAO, PricePaidLineParser pricePaidLineParser) {
 		this.pricePaidFileFinder = pricePaidFileFinder;
 		this.postcodeService = postcodeService;
-		this.pricePaidDAO = pricePaidDAO;			
+		this.pricePaidDAO = pricePaidDAO;
+		this.pricePaidLineParser = pricePaidLineParser;			
 	}
 	
 	public void importPricePaidFiles() throws IOException, ParseException {		
@@ -53,7 +56,7 @@ public class PricePaidImportService {
 			String [] nextLine;
 			while ((nextLine = reader.readNext()) != null) {
 								
-			 	final PricePaidLine line = new PricePaidLineParser().parse(nextLine);				
+			 	final PricePaidLine line = pricePaidLineParser.parse(nextLine);			 	
 				final PricePaid pricePaid = process(line);
 				
 				if (line.getRecordStatus() == RecordStatus.ADDED) {
@@ -69,8 +72,7 @@ public class PricePaidImportService {
 					pricePaidDAO.delete(pricePaid.getId());
 				}				
 			}			
-		}
-		
+		}		
 		log.info("Import complete");
 	}
 	
