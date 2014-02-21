@@ -155,7 +155,12 @@ public class PricePaid implements RssFeedable {
 	public LatLong getLatLong() {
 		return latLong;
 	}
-
+	
+	@Override
+	public String getAuthor() {
+		return null;
+	}
+	
 	@Override
 	public String toString() {
 		return "PricePaid [id=" + id + ", price=" + price + ", date=" + date
@@ -166,5 +171,5 @@ public class PricePaid implements RssFeedable {
 				+ ", county=" + county + ", latLong=" + latLong + ", location="
 				+ Arrays.toString(location) + "]";
 	}
-	
+
 }
