@@ -137,7 +137,7 @@ public class PricePaid implements RssFeedable {
 	@JsonIgnore
 	@Override
 	public String getHeadline() {
-		return SOAN + " " + POAN + " " + street + " " + locality + " " + district + " - Â£" + price;
+		return SOAN + " " + POAN + " " + street + " " + locality + " " + district + " - £" + price;
 	}
 
 	@JsonIgnore
