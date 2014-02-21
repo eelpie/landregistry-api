@@ -12,6 +12,7 @@ import org.springframework.web.servlet.View;
 
 import uk.co.eelpieconsulting.common.files.FileInformationService;
 import uk.co.eelpieconsulting.common.geo.model.LatLong;
+import uk.co.eelpieconsulting.common.views.EtagGenerator;
 import uk.co.eelpieconsulting.common.views.ViewFactory;
 import uk.co.eelpieconsulting.landregistry.daos.PricePaidDAO;
 import uk.co.eelpieconsulting.landregistry.parsing.PostcodeService;
@@ -31,11 +32,11 @@ public class SearchController {
 	private final ViewFactory viewFactory;
 	
 	@Autowired
-	public SearchController(PricePaidDAO pricePaidDAO, PricePaidFileFinder pricePaidFileFinder, PostcodeService postcodeService, ViewFactory viewFactory) {
+	public SearchController(PricePaidDAO pricePaidDAO, PricePaidFileFinder pricePaidFileFinder, PostcodeService postcodeService) {
 		this.pricePaidDAO = pricePaidDAO;
 		this.pricePaidFileFinder = pricePaidFileFinder;
 		this.postcodeService = postcodeService;
-		this.viewFactory = viewFactory;
+		this.viewFactory = new ViewFactory(new EtagGenerator());
 		fileInformationService = new FileInformationService();
 	}
 	

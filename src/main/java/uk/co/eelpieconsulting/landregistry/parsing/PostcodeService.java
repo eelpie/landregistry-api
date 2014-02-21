@@ -18,7 +18,7 @@ public class PostcodeService {
 	
 	private HttpFetcher httpFetcher;
 	
-	@Value("#{landRegistry['postcodeApiUrl']}")
+	@Value("${postcodeApiUrl}")
 	private String apiUrl;
 	
 	public PostcodeService() {
