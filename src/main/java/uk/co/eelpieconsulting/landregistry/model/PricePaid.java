@@ -23,19 +23,30 @@ public class PricePaid implements RssFeedable {
 	
 	private int price;
 	
+    @Indexed
 	@JsonSerialize(using = DateOnlySerializer.class)
 	private Date date;
 	
+    @Indexed
 	private String postcode;
+    @Indexed
 	private PropertyType type;
+    @Indexed
 	private boolean newBuild;
 	private Duration duration;
+    @Indexed
 	private String POAN;
+    @Indexed
 	private String SOAN;
+    @Indexed
 	private String street;
-	private String locality;
+    @Indexed
+    private String locality;
+    @Indexed
 	private String district;
+    @Indexed
 	private String borough;
+    @Indexed
 	private String county;
 	private LatLong latLong;
 	
