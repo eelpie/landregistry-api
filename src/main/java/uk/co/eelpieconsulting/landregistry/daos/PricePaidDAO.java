@@ -33,6 +33,15 @@ public class PricePaidDAO {
 		final Query<PricePaid> allStops = datastore.createQuery(PricePaid.class);
 		datastore.delete(allStops);
 	}
+	
+	public PricePaid getById(String id) {
+		return datastore.find(PricePaid.class, "id", id).get();
+	}
+	
+	public List<PricePaid> getForProperty(String property) {
+		final Query<PricePaid> all = datastore.find(PricePaid.class, "property", property);
+		return all.asList();
+	}
 
 	public List<PricePaid> getAll() {
 		final Query<PricePaid> all = datastore.createQuery(PricePaid.class);

@@ -18,12 +18,15 @@ import uk.co.eelpieconsulting.landregistry.model.PricePaidLine;
 import uk.co.eelpieconsulting.landregistry.model.RecordStatus;
 import au.com.bytecode.opencsv.CSVReader;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 
 @Component
 public class PricePaidImportService {
 	
 	private final static Logger log = Logger.getLogger(PricePaidImportService.class);
+
+	private final static Joiner dashJoiner = Joiner.on("-").skipNulls();
 	
 	private PricePaidFileFinder pricePaidFileFinder;
 	private PostcodeService postcodeService;
@@ -78,7 +81,10 @@ public class PricePaidImportService {
 	
 	private PricePaid process(final PricePaidLine line) {
 		final LatLong latLong = resolveLocation(line);
-		return new PricePaid(line.getId(), line.getPrice(),
+		final String property = dashJoiner.join(!Strings.isNullOrEmpty(line.getSOAN()) ? line.getSOAN() : null, 
+				line.getPOAN(), line.getStreet(), line.getDistrict(), line.getBorough(), line.getCounty());
+
+		return new PricePaid(line.getId(), property, line.getPrice(),
 				line.getDate(), line.getPostcode(), line.getType(),
 				line.isNewBuild(), line.getDuration(), line.getPOAN(),
 				line.getSOAN(), line.getStreet(), line.getLocality(),

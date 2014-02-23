@@ -21,6 +21,9 @@ public class PricePaid implements RssFeedable {
 	@Id
 	private String id;
 	
+	@Indexed
+	private String property;
+	
 	private int price;
 	
     @Indexed
@@ -56,11 +59,12 @@ public class PricePaid implements RssFeedable {
 	public PricePaid() {
 	}
 	
-	public PricePaid(String id, int price, Date date, String postcode,
+	public PricePaid(String id, String property, int price, Date date, String postcode,
 			PropertyType type, boolean newBuild, Duration duration,
 			String POAN, String SOAN, String street, String locality,
 			String district, String borough, String county, LatLong latLong) {
 		this.id = id;
+		this.property = property;
 		this.price = price;
 		this.date = date;
 		this.postcode = postcode;
@@ -171,16 +175,21 @@ public class PricePaid implements RssFeedable {
 	public String getAuthor() {
 		return null;
 	}
-	
-	@Override
-	public String toString() {
-		return "PricePaid [id=" + id + ", price=" + price + ", date=" + date
-				+ ", postcode=" + postcode + ", type=" + type + ", newBuild="
-				+ newBuild + ", duration=" + duration + ", POAN=" + POAN
-				+ ", SOAN=" + SOAN + ", street=" + street + ", locality="
-				+ locality + ", district=" + district + ", borough=" + borough
-				+ ", county=" + county + ", latLong=" + latLong + ", location="
-				+ Arrays.toString(location) + "]";
+
+	public String getProperty() {
+		return property;
 	}
 
+	@Override
+	public String toString() {
+		return "PricePaid [POAN=" + POAN + ", SOAN=" + SOAN + ", borough="
+				+ borough + ", county=" + county + ", date=" + date
+				+ ", district=" + district + ", duration=" + duration + ", id="
+				+ id + ", latLong=" + latLong + ", locality=" + locality
+				+ ", location=" + Arrays.toString(location) + ", newBuild="
+				+ newBuild + ", postcode=" + postcode + ", price=" + price
+				+ ", property=" + property + ", street=" + street + ", type="
+				+ type + "]";
+	}
+	
 }

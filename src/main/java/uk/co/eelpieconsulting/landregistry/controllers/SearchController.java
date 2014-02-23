@@ -5,6 +5,7 @@ import java.text.ParseException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -40,7 +41,21 @@ public class SearchController {
 		fileInformationService = new FileInformationService();
 	}
 	
-	@RequestMapping("/near")
+	@RequestMapping("/pricespaid/{id}")
+	public ModelAndView pricePaid(@PathVariable String id) {
+		final ModelAndView mv = new ModelAndView(viewFactory.getJsonView());
+		mv.addObject("data", pricePaidDAO.getById(id));
+		return mv;
+	}
+	
+	@RequestMapping("/pricespaid/property/{property}")
+	public ModelAndView property(@PathVariable String property) {
+		final ModelAndView mv = new ModelAndView(viewFactory.getJsonView());
+		mv.addObject("data", pricePaidDAO.getForProperty(property));
+		return mv;
+	}
+	
+	@RequestMapping("/pricespaid/near")
 	public ModelAndView near(@RequestParam(value = "latitude", required = false) Double latitude,
 			@RequestParam(value = "longitude", required = false) Double longitude,
 			@RequestParam(value = "postcode", required = false) String postcode,
