@@ -87,7 +87,13 @@
 			<version>1.8.5</version>
 			<scope>test</scope>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>uk.co.eelpieconsulting.common</groupId>
+			<artifactId>common-http</artifactId>
+			<version>1.1.6</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>uk.co.eelpieconsulting.common</groupId>
 			<artifactId>common-views</artifactId>
@@ -189,19 +195,37 @@
 			<artifactId>json</artifactId>
 			<version>20090211</version>
 		</dependency>
-
-		<dependency>
-			<groupId>org.apache.solr</groupId>
-			<artifactId>solr-core</artifactId>
-			<version>3.6.0</version>
-		</dependency>
-
+		
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.16</version>
 			<type>jar</type>
 		</dependency>
+	
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+			<version>2.1.3</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.2.2</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.2.2</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.2.2</version>
+		</dependency>     
 
 	</dependencies>
 
