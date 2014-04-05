@@ -56,7 +56,7 @@ public class ZooplaService {
 				}
 				
 				final String floorPlanUrl = listing.getFloor_plan();
-				if (!Strings.isNullOrEmpty(floorPlanUrl) && !zooplaDAO.imageExists(floorPlanUrl)) {
+				if (!Strings.isNullOrEmpty(floorPlanUrl) && !zooplaDAO.imageExists(floorPlanUrl.replaceAll(" ", ""))) {
 					try {						
 						zooplaDAO.saveImage(new Image(floorPlanUrl, new HttpFetcher().getBytes(floorPlanUrl.replaceAll(" ", ""))));
 					} catch (Exception e) {
