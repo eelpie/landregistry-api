@@ -1,5 +1,6 @@
 package uk.co.eelpieconsulting.landregistry.zoopla;
 
+import java.awt.event.FocusAdapter;
 import java.io.IOException;
 import java.util.List;
 
@@ -57,11 +58,13 @@ public class ZooplaService {
 				
 				final String floorPlanUrl = listing.getFloor_plan();
 				if (!Strings.isNullOrEmpty(floorPlanUrl) && !zooplaDAO.imageExists(floorPlanUrl.replaceAll(" ", ""))) {
-					try {						
-						zooplaDAO.saveImage(new Image(floorPlanUrl, new HttpFetcher().getBytes(floorPlanUrl.replaceAll(" ", ""))));
-					} catch (Exception e) {
-						log.error("Error while saving image", e);
-					}					
+					if (!floorPlanUrl.contains("metroix")) {	// Hangs?
+						try {						
+							zooplaDAO.saveImage(new Image(floorPlanUrl, new HttpFetcher().getBytes(floorPlanUrl.replaceAll(" ", ""))));
+						} catch (Exception e) {
+							log.error("Error while saving image", e);
+						}
+					}
 				}
 			}			
 		}
