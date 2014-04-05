@@ -42,7 +42,7 @@ public class ZooplaService {
 			List<Listing> listings = client.getListingsForArea(area);
 			for (Listing listing : listings) {
 				listing.setId(listing.getListing_id() + "-" + DateTime.now().getMillis());
-				zooplaDAO.save(listing);				
+				zooplaDAO.save(listing);
 			}
 			
 			for (Listing listing : listings) {
@@ -52,10 +52,10 @@ public class ZooplaService {
 						zooplaDAO.saveImage(new Image(imageUrl, new HttpFetcher().getBytes(imageUrl)));
 					} catch (Exception e) {
 						log.error("Error while saving image", e);
-					}					
+					}
 				}
 				
-				final String floorPlanUrl = listing.getFloor_plan();
+				final String floorPlanUrl = listing.getFloor_plan().replaceAll(" ", "");
 				if (!Strings.isNullOrEmpty(floorPlanUrl) && !zooplaDAO.imageExists(floorPlanUrl)) {
 					try {
 						zooplaDAO.saveImage(new Image(floorPlanUrl, new HttpFetcher().getBytes(floorPlanUrl)));
