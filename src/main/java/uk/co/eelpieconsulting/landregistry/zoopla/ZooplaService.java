@@ -55,10 +55,10 @@ public class ZooplaService {
 					}
 				}
 				
-				final String floorPlanUrl = listing.getFloor_plan().replaceAll(" ", "");
+				final String floorPlanUrl = listing.getFloor_plan();
 				if (!Strings.isNullOrEmpty(floorPlanUrl) && !zooplaDAO.imageExists(floorPlanUrl)) {
-					try {
-						zooplaDAO.saveImage(new Image(floorPlanUrl, new HttpFetcher().getBytes(floorPlanUrl)));
+					try {						
+						zooplaDAO.saveImage(new Image(floorPlanUrl, new HttpFetcher().getBytes(floorPlanUrl.replaceAll(" ", ""))));
 					} catch (Exception e) {
 						log.error("Error while saving image", e);
 					}					
