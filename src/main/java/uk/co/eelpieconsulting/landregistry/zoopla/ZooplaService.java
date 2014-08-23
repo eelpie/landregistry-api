@@ -39,10 +39,14 @@ public class ZooplaService {
 	@Scheduled(fixedRate= 43200000)
 	public void query() throws JsonParseException, JsonMappingException, HttpNotFoundException, HttpBadRequestException, HttpForbiddenException, HttpFetchException, IOException {
 		final List<String> areasOfInterest = Lists.newArrayList("Hampton, London", "Twickenham, London");	
+		
+		log.info("Starting import for areas of interest: " + areasOfInterest);
 		for (String area : areasOfInterest) {
 			List<Listing> listings = client.getListingsForArea(area);
 			for (Listing listing : listings) {
-				listing.setId(listing.getListing_id() + "-" + DateTime.now().getMillis());
+				final String listingSnapshotId = listing.getListing_id() + "-" + DateTime.now().getMillis();
+				log.info("Saving listing snapshot: " + listingSnapshotId + " / " + listing.getDetails_url());
+				listing.setId(listingSnapshotId);
 				zooplaDAO.save(listing);
 			}
 			
@@ -68,6 +72,8 @@ public class ZooplaService {
 				}
 			}			
 		}
+		log.info("Import completed");
+		
 	}
 	
 }
