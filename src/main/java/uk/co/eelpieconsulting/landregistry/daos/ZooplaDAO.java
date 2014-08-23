@@ -1,6 +1,7 @@
 package uk.co.eelpieconsulting.landregistry.daos;
 
 import java.net.UnknownHostException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,10 @@ public class ZooplaDAO {
 	@Autowired
 	public ZooplaDAO(DataSourceFactory dataSourceFactory) throws UnknownHostException, MongoException {
 		this.datastore = dataSourceFactory.getDatastore();
+	}
+	
+	public List<Listing> getAll() {
+		return datastore.find(Listing.class).asList();
 	}
 	
 	public void save(Listing listing) {
