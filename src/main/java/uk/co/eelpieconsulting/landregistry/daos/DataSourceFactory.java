@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import uk.co.eelpieconsulting.landregistry.model.PricePaid;
+import uk.co.eelpieconsulting.landregistry.zoopla.BigDecimalConvertor;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Morphia;
@@ -31,6 +32,7 @@ public class DataSourceFactory {
 	
 	public Datastore getDatastore() throws UnknownHostException, MongoException {	
 		Morphia morphia = new Morphia();
+		morphia.getMapper().getConverters().addConverter(BigDecimalConvertor.class);
 		
 		Mongo m = new Mongo(mongoHost);
 		final Datastore dataStore = morphia.createDatastore(m, mongoDatabase);
