@@ -1,12 +1,12 @@
 package uk.co.eelpieconsulting.landregistry.zoopla;
 
-import java.awt.event.FocusAdapter;
 import java.io.IOException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -31,8 +31,8 @@ public class ZooplaService {
 	private ZooplaDAO zooplaDAO;
 	
 	@Autowired
-	private ZooplaService(ZooplaApiClient client, ZooplaDAO zooplaDAO) {
-		this.client = client;
+	private ZooplaService(ZooplaDAO zooplaDAO, @Value("${zooplaApiKey}") String apiKey) {
+		this.client = new ZooplaApiClient(apiKey);
 		this.zooplaDAO = zooplaDAO;
 	}
 	
