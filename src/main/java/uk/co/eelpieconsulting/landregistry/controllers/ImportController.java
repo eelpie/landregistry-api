@@ -31,13 +31,13 @@ public class ImportController {
 		this.viewFactory = new ViewFactory(new EtagGenerator());
 	}
 	
-	@RequestMapping("/import")
+	@RequestMapping("/import/landregistry")
 	public ModelAndView importPricePaidFiles() throws IOException, ParseException  {
 		pricePaidImportService.importPricePaidFiles();
 		return new ModelAndView(viewFactory.getJsonView()).addObject("data", "ok");
 	}
 	
-	@RequestMapping("/zoopla")
+	@RequestMapping("/import/zoopla")
 	public ModelAndView zoopla() throws IOException, ParseException, HttpNotFoundException, HttpBadRequestException, HttpForbiddenException, HttpFetchException  {
 		zooplaService.query();
 		return new ModelAndView(viewFactory.getJsonView()).addObject("data", "ok");
