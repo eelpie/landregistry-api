@@ -74,7 +74,8 @@ public class PricePaidImportService {
 					log.debug("Deleting: " + pricePaid.toString());
 					pricePaidDAO.delete(pricePaid.getId());
 				}				
-			}			
+			}
+			reader.close();
 		}		
 		log.info("Import complete");
 	}
