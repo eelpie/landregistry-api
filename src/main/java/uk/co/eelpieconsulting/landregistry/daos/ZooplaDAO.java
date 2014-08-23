@@ -24,7 +24,7 @@ public class ZooplaDAO {
 	}
 	
 	public List<Listing> getAll() {
-		return datastore.find(Listing.class).asList();
+		return datastore.find(Listing.class).limit(1000).asList();
 	}
 	
 	public void save(Listing listing) {
