@@ -36,7 +36,7 @@ public class ZooplaService {
 		this.zooplaDAO = zooplaDAO;
 	}
 	
-	@Scheduled(fixedRate= 43200000)
+	//@Scheduled(fixedRate= 43200000)
 	public void query() throws JsonParseException, JsonMappingException, HttpNotFoundException, HttpBadRequestException, HttpForbiddenException, HttpFetchException, IOException {
 		final List<String> areasOfInterest = Lists.newArrayList("Hampton, London", "Twickenham, London");	
 		

@@ -23,8 +23,9 @@ public class ZooplaDAO {
 		this.datastore = dataSourceFactory.getDatastore();
 	}
 	
-	public List<Listing> getAll() {
-		return datastore.find(Listing.class).limit(1000).asList();
+	public List<Listing> find(String q) {
+		final Query<Listing> all = datastore.find(Listing.class, "displayable_address", q);
+		return all.asList();
 	}
 	
 	public void save(Listing listing) {
@@ -43,5 +44,6 @@ public class ZooplaDAO {
 	public void saveImage(Image image) {
 		datastore.save(image);		
 	}
+
 	
 }
