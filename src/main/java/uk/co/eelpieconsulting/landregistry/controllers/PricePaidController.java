@@ -22,7 +22,7 @@ import uk.co.eelpieconsulting.landregistry.parsing.PricePaidFileFinder;
 import com.google.common.base.Strings;
 
 @Controller
-public class SearchController {
+public class PricePaidController {
 
 	private static final double NEAR_RADIUS = 0.005;
 	
@@ -33,7 +33,7 @@ public class SearchController {
 	private final ViewFactory viewFactory;
 	
 	@Autowired
-	public SearchController(PricePaidDAO pricePaidDAO, PricePaidFileFinder pricePaidFileFinder, PostcodeService postcodeService) {
+	public PricePaidController(PricePaidDAO pricePaidDAO, PricePaidFileFinder pricePaidFileFinder, PostcodeService postcodeService) {
 		this.pricePaidDAO = pricePaidDAO;
 		this.pricePaidFileFinder = pricePaidFileFinder;
 		this.postcodeService = postcodeService;
@@ -43,16 +43,21 @@ public class SearchController {
 	
 	@RequestMapping("/pricespaid/{id}")
 	public ModelAndView pricePaid(@PathVariable String id) {
-		final ModelAndView mv = new ModelAndView(viewFactory.getJsonView());
-		mv.addObject("data", pricePaidDAO.getById(id));
-		return mv;
+		return new ModelAndView(viewFactory.getJsonView()).addObject("data", pricePaidDAO.getById(id));
 	}
 	
 	@RequestMapping("/pricespaid/property/{property}")
 	public ModelAndView property(@PathVariable String property) {
-		final ModelAndView mv = new ModelAndView(viewFactory.getJsonView());
-		mv.addObject("data", pricePaidDAO.getForProperty(property));
-		return mv;
+		return new ModelAndView(viewFactory.getJsonView()).addObject("data", pricePaidDAO.getForProperty(property));
+	}
+	
+	@RequestMapping("/pricespaid/find")
+	public ModelAndView find(@RequestParam String borough, 
+			@RequestParam String district,
+			@RequestParam String street) {		
+		final View view = viewFactory.getJsonView();
+		final ModelAndView mv = new ModelAndView(view).addObject("data", pricePaidDAO.find(borough, district, street));
+		return mv;		
 	}
 	
 	@RequestMapping("/pricespaid/near")
@@ -76,19 +81,15 @@ public class SearchController {
 			throw new RuntimeException("No location given");
 		}
 		
-		final View view = format != null && format.equals("rss") ? getRssViewFor(latLong) : viewFactory.getJsonView();
-		final ModelAndView mv = new ModelAndView(view);
-		mv.addObject("data", pricePaidDAO.near(latLong, NEAR_RADIUS));
-		return mv;
+		final View view = format != null && format.equals("rss") ? getRssViewFor(latLong) : viewFactory.getJsonView();		
+		return new ModelAndView(view).addObject("data", pricePaidDAO.near(latLong, NEAR_RADIUS));
 	}
 	
 	@RequestMapping("/sources")
 	public ModelAndView sources() throws IOException, ParseException  {
-		final ModelAndView mv = new ModelAndView(viewFactory.getJsonView());		
-		mv.addObject("data", fileInformationService.makeFileInformationForFiles(pricePaidFileFinder.getFilesInAscendingOrder()));
-		return mv;
+		return new ModelAndView(viewFactory.getJsonView()).addObject("data", fileInformationService.makeFileInformationForFiles(pricePaidFileFinder.getFilesInAscendingOrder()));
 	}
-		
+	
 	private View getRssViewFor(LatLong latLong) {
 		final String title = "Prices paid near " + latLong.getLatitude() + ", " + latLong.getLongitude();
 		return viewFactory.getRssView(title, "http://www.landregistry.gov.uk/public/information/public-data/price-paid-data", title);
