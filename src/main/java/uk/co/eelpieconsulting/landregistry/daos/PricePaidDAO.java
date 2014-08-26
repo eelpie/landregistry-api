@@ -1,6 +1,7 @@
 package uk.co.eelpieconsulting.landregistry.daos;
 
 import java.net.UnknownHostException;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +12,19 @@ import uk.co.eelpieconsulting.landregistry.model.PricePaid;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.query.Query;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
 import com.mongodb.MongoException;
 
 @Component
 public class PricePaidDAO {
 				
+	private static final String BOROUGH = "borough";
+	private static final String COUNTY = "county";
 	private static final String DATE_DESCENDING = "-date";
+	private static final String DISTRICT = "district";
+	private static final String LOCALITY = "locality";
+	private static final String STREET = "street";
 	
 	private final Datastore datastore;
 	
@@ -42,10 +50,15 @@ public class PricePaidDAO {
 		final Query<PricePaid> all = datastore.find(PricePaid.class, "property", property);
 		return all.asList();
 	}
-
-	public List<PricePaid> getAll() {
-		final Query<PricePaid> all = datastore.createQuery(PricePaid.class);
-		return all.asList();
+	
+	public List<PricePaid> find(String borough, String district, String street) {
+		final Query<PricePaid> byStreet = datastore.createQuery(PricePaid.class).
+				filter(BOROUGH, borough).
+				filter(DISTRICT, district).
+				filter(STREET, street).
+                order(DATE_DESCENDING);
+		
+		return byStreet.asList();
 	}
 
 	public List<PricePaid> near(LatLong latLong, double radius) {
@@ -57,6 +70,33 @@ public class PricePaidDAO {
 
 	public void delete(String id) {
 		datastore.delete(PricePaid.class, id);
+	}
+
+	public List<String> getCounties() {		
+		DBCollection collection = datastore.getCollection(PricePaid.class);
+		return (List<String>) collection.distinct(COUNTY);
+	}
+	
+	public List<String> getBoroughs(String county) {		
+		final BasicDBObject dbObject=new BasicDBObject().append(COUNTY, county);
+		return (List<String>) datastore.getCollection(PricePaid.class).distinct(BOROUGH, dbObject);
+	}
+	
+	public List<String> getDistricts(String borough) {
+		final BasicDBObject dbObject=new BasicDBObject().append(BOROUGH, borough);
+		return (List<String>) datastore.getCollection(PricePaid.class).distinct(DISTRICT, dbObject);
+	}
+	
+	public List<String> getLocalities(String district) {
+		final BasicDBObject dbObject=new BasicDBObject().append(DISTRICT, district);
+		return (List<String>) datastore.getCollection(PricePaid.class).distinct(LOCALITY, dbObject);
+	}
+	
+	public List<String> getStreets(String district) {
+		final BasicDBObject dbObject=new BasicDBObject().append(DISTRICT, district);
+		List<String> distinct = datastore.getCollection(PricePaid.class).distinct(STREET, dbObject);
+		Collections.sort(distinct);
+		return distinct;
 	}
 	
 }
