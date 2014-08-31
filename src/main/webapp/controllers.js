@@ -9,8 +9,17 @@ myApp.factory(
 	}]
 );
 
+myApp.factory(	
+	'ZooplaListings',
+	['$resource', function($resource) {
+		return $resource('http://localhost:8080/zoopla/find', {
+		}
+		);
+	}]
+);
+
 myApp.controller('Admin', 
-	function ($scope, $http, PricesPaid) {
+	function ($scope, $http, PricesPaid, ZooplaListings) {
 	
 		$scope.showCounties = function() {			
 			$http.get('http://localhost:8080/pricespaid/counties').success(function(result) {
@@ -30,6 +39,12 @@ myApp.controller('Admin',
 			});		
 		};
 		
+		$scope.showZooplaAddresses = function() {
+			$http.get('http://localhost:8080/zoopla/addresses').success(function(result) {
+				$scope.zooplaAddresses = result;	
+			});		
+		};
+		
 		$scope.showResults = function() {										
 			PricesPaid.query({
 				county: $scope.selectedCounty,
@@ -40,7 +55,16 @@ myApp.controller('Admin',
 			});						
 		};
 		
+		$scope.showZooplaResults = function() {										
+			ZooplaListings.get({
+				q: $scope.selectedZooplaAddress},
+				function(result) {			
+					$scope.zooplaListings = result;
+			});
+		};
+		
 		$scope.showCounties();
+		$scope.showZooplaAddresses();
 	}
 	
 );

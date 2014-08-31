@@ -38,7 +38,12 @@ public class ZooplaController {
 		mv.addObject("data", groupSnapshotsByListingId(snapshots));
 		return mv;
 	}
-
+	
+	@RequestMapping("/zoopla/addresses")
+	public ModelAndView addresses() {
+		return new ModelAndView(viewFactory.getJsonView()).addObject("data", zooplaDAO.addresses());
+	}
+	
 	private Map<String, List<Listing>> groupSnapshotsByListingId(List<Listing> snapshots) {
 		Map<String, List<Listing>> grouped = Maps.newHashMap();
 		for (Listing listing : snapshots) {

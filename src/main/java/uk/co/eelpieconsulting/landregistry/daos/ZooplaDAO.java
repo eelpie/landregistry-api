@@ -1,6 +1,7 @@
 package uk.co.eelpieconsulting.landregistry.daos;
 
 import java.net.UnknownHostException;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import uk.co.eelpieconsulting.landregistry.zoopla.Listing;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.query.Query;
+import com.mongodb.DBCollection;
 import com.mongodb.MongoException;
 
 @Component
@@ -45,5 +47,11 @@ public class ZooplaDAO {
 		datastore.save(image);		
 	}
 
+	public List<String> addresses() {
+		DBCollection collection = datastore.getCollection(Listing.class);
+		List<String> distinct = (List<String>) collection.distinct("displayable_address");
+		Collections.sort(distinct);
+		return distinct;
+	}
 	
 }

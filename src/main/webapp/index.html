@@ -6,10 +6,10 @@
 </head>
 <body ng-controller="Admin">
 
+	<hr/>
 	<select ng-model="selectedCounty" ng-options="county for county in counties" ng-change="showBoroughs()"></select>
 	<select ng-model="selectedBorough" ng-options="borough for borough in boroughs" ng-change="showStreets()"></select>
 	<select ng-model="selectedStreet" ng-options="street for street in streets" ng-change="showResults()"></select>
-	<hr/>
 	
 	<table border="1">
   		<tr ng-repeat="pricePaid in pricesPaid">
@@ -26,8 +26,25 @@
            		{{pricePaid.price}}
             </td>
     	</tr>
-	</table>
+	</table>	
+	
+	<hr/>		
+	<select ng-model="selectedZooplaAddress" ng-options="address for address in zooplaAddresses" ng-change="showZooplaResults()"></select>
 		
+	<table>
+	<tr valign="top" ng-repeat="(key, value) in zooplaListings">
+  		<td>{{key}}</td>
+  		<td>
+  			<p ng-repeat="listing in value">
+  				<img src="{{listing.image_url}}"><br/> 				
+  				{{listing.description}}<br/>  				
+  				{{listing.price}}  				 				
+  			</p>
+  		</td>
+	</tr>
+	</table>	
+	<hr/>
+	
 </body>
 </html>
 
