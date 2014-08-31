@@ -1,0 +1,35 @@
+<html ng-app="myApp">
+<head>	
+	<script src="angular.js"></script>
+	<script src="angular-resource.js"></script>	
+	<script src="controllers.js"></script>
+</head>
+<body ng-controller="Admin">
+
+	<select ng-model="selectedCounty" ng-options="county for county in counties" ng-change="showBoroughs()"></select>
+	<select ng-model="selectedBorough" ng-options="borough for borough in boroughs" ng-change="showDistricts()"></select>
+	<select ng-model="selectedDistrict" ng-options="district for district in districts" ng-change="showStreets()"></select>
+	<select ng-model="selectedStreet" ng-options="street for street in streets" ng-change="showResults()"></select>
+	<hr/>
+	
+	<table border="1">
+  		<tr ng-repeat="pricePaid in pricesPaid">
+            <td>
+            	{{pricePaid.date}}                                
+            </td>                                
+            <td>
+            	{{pricePaid.soan}}
+            	{{pricePaid.poan}}
+            	{{pricePaid.street}}
+            	{{pricePaid.postcode}}
+            </td>
+            <td>
+           		{{pricePaid.price}}
+            </td>
+    	</tr>
+	</table>
+		
+</body>
+</html>
+
+
