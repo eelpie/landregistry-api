@@ -51,13 +51,31 @@ public class PricePaidController {
 		return new ModelAndView(viewFactory.getJsonView()).addObject("data", pricePaidDAO.getForProperty(property));
 	}
 	
+	@RequestMapping("/pricespaid/counties")
+	public ModelAndView counties() {
+		return new ModelAndView(viewFactory.getJsonView()).addObject("data", pricePaidDAO.getCounties());
+	}
+	
+	@RequestMapping("/pricespaid/boroughs")
+	public ModelAndView boroughs(@RequestParam String county) {
+		return new ModelAndView(viewFactory.getJsonView()).addObject("data", pricePaidDAO.getBoroughs(county));
+	}
+	
+	@RequestMapping("/pricespaid/districts")
+	public ModelAndView districts(@RequestParam String borough) {
+		return new ModelAndView(viewFactory.getJsonView()).addObject("data", pricePaidDAO.getDistricts(borough));
+	}
+	
+	@RequestMapping("/pricespaid/streets")
+	public ModelAndView streets(@RequestParam String district) {
+		return new ModelAndView(viewFactory.getJsonView()).addObject("data", pricePaidDAO.getStreets(district));
+	}
+	
 	@RequestMapping("/pricespaid/find")
 	public ModelAndView find(@RequestParam String borough, 
 			@RequestParam String district,
 			@RequestParam String street) {		
-		final View view = viewFactory.getJsonView();
-		final ModelAndView mv = new ModelAndView(view).addObject("data", pricePaidDAO.find(borough, district, street));
-		return mv;		
+		return new ModelAndView(viewFactory.getJsonView()).addObject("data", pricePaidDAO.find(borough, district, street));		
 	}
 	
 	@RequestMapping("/pricespaid/near")
