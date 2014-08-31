@@ -52,6 +52,7 @@ public class PricePaidImportService {
 		
 		pricePaidDAO.removeAll();
 		
+		int importedCount = 0;
 		for (File file : filesToParse) {
 			log.info("Processing file: " + file.getAbsolutePath());
 			
@@ -73,7 +74,12 @@ public class PricePaidImportService {
 				} else if (line.getRecordStatus() == RecordStatus.DELETED) {
 					log.debug("Deleting: " + pricePaid.toString());
 					pricePaidDAO.delete(pricePaid.getId());
-				}				
+				}
+				
+				importedCount ++;
+				if (importedCount % 100 == 0) {
+					log.info("Imported: " + importedCount);
+				}
 			}
 			reader.close();
 		}		
