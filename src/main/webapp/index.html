@@ -7,8 +7,7 @@
 <body ng-controller="Admin">
 
 	<select ng-model="selectedCounty" ng-options="county for county in counties" ng-change="showBoroughs()"></select>
-	<select ng-model="selectedBorough" ng-options="borough for borough in boroughs" ng-change="showDistricts()"></select>
-	<select ng-model="selectedDistrict" ng-options="district for district in districts" ng-change="showStreets()"></select>
+	<select ng-model="selectedBorough" ng-options="borough for borough in boroughs" ng-change="showStreets()"></select>
 	<select ng-model="selectedStreet" ng-options="street for street in streets" ng-change="showResults()"></select>
 	<hr/>
 	

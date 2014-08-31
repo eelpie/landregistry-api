@@ -23,15 +23,9 @@ myApp.controller('Admin',
 				$scope.boroughs = result;			
 			});							
 		};
-					
-		$scope.showDistricts = function() {
-			$http.get('http://localhost:8080/pricespaid/districts?borough=' + $scope.selectedBorough).success(function(result) {
-				$scope.districts = result;			
-			});								
-		};
-				
+		
 		$scope.showStreets = function() {
-			$http.get('http://localhost:8080/pricespaid/streets?district=' + $scope.selectedDistrict).success(function(result) {
+			$http.get('http://localhost:8080/pricespaid/streets?borough=' + $scope.selectedBorough).success(function(result) {
 				$scope.streets = result;	
 			});		
 		};
@@ -40,7 +34,6 @@ myApp.controller('Admin',
 			PricesPaid.query({
 				county: $scope.selectedCounty,
 				borough: $scope.selectedBorough,
-				district: $scope.selectedDistrict,
 				street: $scope.selectedStreet},
 				function(result) {							
 					$scope.pricesPaid = result;

@@ -51,10 +51,9 @@ public class PricePaidDAO {
 		return all.asList();
 	}
 	
-	public List<PricePaid> find(String borough, String district, String street) {
+	public List<PricePaid> find(String borough, String street) {
 		final Query<PricePaid> byStreet = datastore.createQuery(PricePaid.class).
 				filter(BOROUGH, borough).
-				filter(DISTRICT, district).
 				filter(STREET, street).
                 order(DATE_DESCENDING);
 		
@@ -82,18 +81,13 @@ public class PricePaidDAO {
 		return (List<String>) datastore.getCollection(PricePaid.class).distinct(BOROUGH, dbObject);
 	}
 	
-	public List<String> getDistricts(String borough) {
-		final BasicDBObject dbObject=new BasicDBObject().append(BOROUGH, borough);
-		return (List<String>) datastore.getCollection(PricePaid.class).distinct(DISTRICT, dbObject);
-	}
-	
 	public List<String> getLocalities(String district) {
 		final BasicDBObject dbObject=new BasicDBObject().append(DISTRICT, district);
 		return (List<String>) datastore.getCollection(PricePaid.class).distinct(LOCALITY, dbObject);
 	}
 	
-	public List<String> getStreets(String district) {
-		final BasicDBObject dbObject=new BasicDBObject().append(DISTRICT, district);
+	public List<String> getStreets(String borough) {
+		final BasicDBObject dbObject=new BasicDBObject().append(BOROUGH, borough);
 		List<String> distinct = datastore.getCollection(PricePaid.class).distinct(STREET, dbObject);
 		Collections.sort(distinct);
 		return distinct;

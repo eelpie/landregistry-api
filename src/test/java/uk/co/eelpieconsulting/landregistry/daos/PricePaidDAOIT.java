@@ -23,7 +23,7 @@ public class PricePaidDAOIT {
 	@Test
 	public void canFetchPricesPaidForStreet() throws UnknownHostException, MongoException {
 		
-		final List<PricePaid> pricesPaid = pricePaidDAO.find("RICHMOND UPON THAMES", "TWICKENHAM", "HEATHFIELD NORTH");		
+		final List<PricePaid> pricesPaid = pricePaidDAO.find("RICHMOND UPON THAMES", "HEATHFIELD NORTH");		
 		for (PricePaid string : pricesPaid) {
 			System.out.println(string.getPOAN() + ", " + string.getDate() + ", " + string.getPrice());
 		}

@@ -61,21 +61,15 @@ public class PricePaidController {
 		return new ModelAndView(viewFactory.getJsonView()).addObject("data", pricePaidDAO.getBoroughs(county));
 	}
 	
-	@RequestMapping("/pricespaid/districts")
-	public ModelAndView districts(@RequestParam String borough) {
-		return new ModelAndView(viewFactory.getJsonView()).addObject("data", pricePaidDAO.getDistricts(borough));
-	}
-	
 	@RequestMapping("/pricespaid/streets")
-	public ModelAndView streets(@RequestParam String district) {
-		return new ModelAndView(viewFactory.getJsonView()).addObject("data", pricePaidDAO.getStreets(district));
+	public ModelAndView streets(@RequestParam String borough) {
+		return new ModelAndView(viewFactory.getJsonView()).addObject("data", pricePaidDAO.getStreets(borough));
 	}
 	
 	@RequestMapping("/pricespaid/find")
 	public ModelAndView find(@RequestParam String borough, 
-			@RequestParam String district,
 			@RequestParam String street) {		
-		return new ModelAndView(viewFactory.getJsonView()).addObject("data", pricePaidDAO.find(borough, district, street));		
+		return new ModelAndView(viewFactory.getJsonView()).addObject("data", pricePaidDAO.find(borough, street));		
 	}
 	
 	@RequestMapping("/pricespaid/near")
