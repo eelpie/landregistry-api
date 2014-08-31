@@ -47,42 +47,48 @@ public class PricePaidImportService {
 	public void importPricePaidFiles() throws IOException, ParseException {		
 		log.info("Starting import");
 		
-		final List<File> filesToParse = pricePaidFileFinder.getFilesInAscendingOrder();
-		log.info("Found " + filesToParse.size() + " files to import");
-		
-		pricePaidDAO.removeAll();
-		
-		int importedCount = 0;
-		for (File file : filesToParse) {
-			log.info("Processing file: " + file.getAbsolutePath());
+		try {
+			final List<File> filesToParse = pricePaidFileFinder.getFilesInAscendingOrder();
+			log.info("Found " + filesToParse.size() + " files to import");
 			
-			final CSVReader reader = new CSVReader(new InputStreamReader(new FileInputStream(file)));
-			String [] nextLine;
-			while ((nextLine = reader.readNext()) != null) {
-								
-			 	final PricePaidLine line = pricePaidLineParser.parse(nextLine);			 	
-				final PricePaid pricePaid = process(line);
+			pricePaidDAO.removeAll();
+			
+			int importedCount = 0;
+			for (File file : filesToParse) {
+				log.info("Processing file: " + file.getAbsolutePath());
 				
-				if (line.getRecordStatus() == RecordStatus.ADDED) {
-					log.debug("Adding: " + pricePaid.toString());
-					pricePaidDAO.save(pricePaid);
-				
-				} else if (line.getRecordStatus() == RecordStatus.CHANGED) { 
-					log.debug("Changing: " + pricePaid.toString());
-					pricePaidDAO.save(pricePaid);
+				final CSVReader reader = new CSVReader(new InputStreamReader(new FileInputStream(file)));
+				String [] nextLine;
+				while ((nextLine = reader.readNext()) != null) {
+									
+				 	final PricePaidLine line = pricePaidLineParser.parse(nextLine);			 	
+					final PricePaid pricePaid = process(line);
 					
-				} else if (line.getRecordStatus() == RecordStatus.DELETED) {
-					log.debug("Deleting: " + pricePaid.toString());
-					pricePaidDAO.delete(pricePaid.getId());
+					if (line.getRecordStatus() == RecordStatus.ADDED) {
+						log.debug("Adding: " + pricePaid.toString());
+						pricePaidDAO.save(pricePaid);
+					
+					} else if (line.getRecordStatus() == RecordStatus.CHANGED) { 
+						log.debug("Changing: " + pricePaid.toString());
+						pricePaidDAO.save(pricePaid);
+						
+					} else if (line.getRecordStatus() == RecordStatus.DELETED) {
+						log.debug("Deleting: " + pricePaid.toString());
+						pricePaidDAO.delete(pricePaid.getId());
+					}
+					
+					importedCount ++;
+					if (importedCount % 100 == 0) {
+						log.info("Imported: " + importedCount);
+					}
 				}
-				
-				importedCount ++;
-				if (importedCount % 100 == 0) {
-					log.info("Imported: " + importedCount);
-				}
+				reader.close();
 			}
-			reader.close();
-		}		
+			
+		} catch (Exception e) {
+			log.error("Prices paid import failed", e);
+		}
+		
 		log.info("Import complete");
 	}
 	
