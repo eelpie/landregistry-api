@@ -36,9 +36,12 @@
   		<td>{{key}}</td>
   		<td>
   			<p ng-repeat="listing in value">
-  				<img src="{{listing.image_url}}"><br/> 				
+  				<a href="{{listing.details_url}}"><img src="{{listing.image_url}}"></a><br/> 				
   				{{listing.description}}<br/>  				
-  				{{listing.price}}  				 				
+  				&pound; {{listing.price}}<br/>  				
+  				Status: {{listing.listing_status}}</br>
+  				{{listing.id}} 
+  				{{listing.first_published_date}} {{listing.last_published_date}}  				 					
   			</p>
   		</td>
 	</tr>
