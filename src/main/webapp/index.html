@@ -30,21 +30,34 @@
 	
 	<hr/>		
 	<select ng-model="selectedZooplaAddress" ng-options="address for address in zooplaAddresses" ng-change="showZooplaResults()"></select>
-		
+			
 	<table>
-	<tr valign="top" ng-repeat="(key, value) in zooplaListings">
-  		<td>{{key}}</td>
-  		<td>
-  			<p ng-repeat="listing in value">
-  				<a href="{{listing.details_url}}"><img src="{{listing.image_url}}"></a><br/> 				
-  				{{listing.description}}<br/>  				
-  				&pound; {{listing.price}}<br/>  				
-  				Status: {{listing.listing_status}}</br>
-  				{{listing.id}} 
-  				{{listing.first_published_date}} {{listing.last_published_date}}  				 					
-  			</p>
-  		</td>
-	</tr>
+		<tr valign="top" ng-repeat="(key, value) in zooplaListings">		
+	  		<td>{{key}}
+	  				
+		  		<form>
+		  			Number: <input ng-model="addressNumbers[key]" /><br/>
+		  			Street: <input ng-model="addressStreets[key]" /><br/>
+		  			Borough: <input ng-model="addressBoroughs[key]" /><br/>
+		  			County: <input ng-model="addressCounties[key]" /><br/>
+		  			
+		  			<input type="button" ng-click="saveAddress(key)" value="Pin" />
+		  		</form>
+	  		
+	  		</td>
+	  
+	  		
+	  		<td>
+	  			<p ng-repeat="listing in value">
+	  				<a href="{{listing.details_url}}"><img src="{{listing.image_url}}"></a><br/> 				
+	  				{{listing.description}}<br/>  				
+	  				&pound; {{listing.price}}<br/>  				
+	  				Status: {{listing.listing_status}}</br>
+	  				{{listing.id}} 
+	  				{{listing.first_published_date}} {{listing.last_published_date}}  				 					
+	  			</p>
+		  	</td>  		
+		</tr>
 	</table>	
 	<hr/>
 	
