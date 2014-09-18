@@ -33,11 +33,8 @@ public class ZooplaController {
 	
 	@RequestMapping("/zoopla/find")
 	public ModelAndView find(@RequestParam String q) {
-		final List<Listing> snapshots = zooplaDAO.find(q);
-		
-		final ModelAndView mv = new ModelAndView(viewFactory.getJsonView());
-		mv.addObject("data", groupSnapshotsByListingId(snapshots));
-		return mv;
+		final List<Listing> snapshots = zooplaDAO.find(q);		
+		return new ModelAndView(viewFactory.getJsonView()).addObject("data", groupSnapshotsByListingId(snapshots));
 	}
 	
 	@RequestMapping("/zoopla/addresses")
