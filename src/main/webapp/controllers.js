@@ -3,7 +3,7 @@ var myApp = angular.module('myApp', ['ngResource']);
 myApp.factory(	
 	'PricesPaid',
 	['$resource', function($resource) {
-		return $resource('http://heathfield.local:8080/pricespaid/find', {
+		return $resource('http://localhost:8080/pricespaid/find', {
 		}
 		);
 	}]
@@ -12,35 +12,45 @@ myApp.factory(
 myApp.factory(	
 	'ZooplaListings',
 	['$resource', function($resource) {
-		return $resource('http://heathfield.local:8080/zoopla/find', {
+		return $resource('http://localhost:8080/zoopla/find', {
 		}
 		);
 	}]
 );
 
+myApp.factory(	
+	'Addresses',
+	['$resource', function($resource) {
+		return $resource('http://localhost:8080/addresses', {
+		}
+		);
+	}]
+);
+
+
 myApp.controller('Admin', 
-	function ($scope, $http, PricesPaid, ZooplaListings) {
+	function ($scope, $http, PricesPaid, ZooplaListings, Addresses) {
 	
 		$scope.showCounties = function() {			
-			$http.get('http://heathfield.local:8080/pricespaid/counties').success(function(result) {
+			$http.get('http://localhost:8080/pricespaid/counties').success(function(result) {
 				$scope.counties = result;			
 			});		
 		};
 		
 		$scope.showBoroughs = function() {
-			$http.get('http://heathfield.local:8080/pricespaid/boroughs?county=' + $scope.selectedCounty).success(function(result) {
+			$http.get('http://localhost:8080/pricespaid/boroughs?county=' + $scope.selectedCounty).success(function(result) {
 				$scope.boroughs = result;			
 			});							
 		};
 		
 		$scope.showStreets = function() {
-			$http.get('http://heathfield.local:8080/pricespaid/streets?borough=' + $scope.selectedBorough).success(function(result) {
+			$http.get('http://localhost:8080/pricespaid/streets?borough=' + $scope.selectedBorough).success(function(result) {
 				$scope.streets = result;	
 			});		
 		};
 		
 		$scope.showZooplaAddresses = function() {
-			$http.get('http://heathfield.local:8080/zoopla/addresses').success(function(result) {
+			$http.get('http://localhost:8080/zoopla/addresses').success(function(result) {
 				$scope.zooplaAddresses = result;	
 			});		
 		};
@@ -77,6 +87,15 @@ myApp.controller('Admin',
 			console.log($scope.addressStreets[listingId]);
 			console.log($scope.addressBoroughs[listingId]);
 			console.log($scope.addressCounties[listingId]);
+			
+			var address = {
+				number: $scope.addressNumbers[listingId],
+				street: $scope.addressStreets[listingId], 
+				borough: $scope.addressBoroughs[listingId],
+				country: $scope.addressCounties[listingId]
+				};
+				
+			Addresses.save(address);			
 		};
 	}
 	
