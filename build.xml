@@ -23,7 +23,7 @@
         </copy>
         <chmod file="target/package/${package.name}/DEBIAN/postinst" perm="755"/>
 
-    	<copy file="target/${package.name}-0.0.1-SNAPSHOT.jar" tofile="target/package/${package.name}/opt/${package.name}/${package.name}.jar" />
+    	<copy file="target/${package.name}-1.0.jar" tofile="target/package/${package.name}/opt/${package.name}/${package.name}.jar" />
 
     	<copy file="landregistry-api.conf" tofile="target/package/${package.name}/etc/init/landregistry-api.conf" />
     		
