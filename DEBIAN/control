@@ -1,0 +1,11 @@
+Package: landregistry-api
+Version: %VERSION%
+Depends: openjdk-7-jre
+Section: landregistry
+Priority: optional
+Architecture: all
+Essential: no
+Installed-Size: 1024
+Maintainer: Tony McCrae [tony@eelpieconsulting.co.uk]
+Provides: landregistry-api
+Description: Land registry API
