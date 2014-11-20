@@ -51,7 +51,7 @@ public class PricePaidImportService {
 			final List<File> filesToParse = pricePaidFileFinder.getFilesInAscendingOrder();
 			log.info("Found " + filesToParse.size() + " files to import");
 			
-			pricePaidDAO.removeAll();
+			pricePaidDAO.removeAll();	// TODO needs to be a drop - delete all is 10s per second slow
 			
 			int importedCount = 0;
 			for (File file : filesToParse) {
