@@ -33,7 +33,7 @@ public class PricePaidImportService {
 	private PricePaidDAO pricePaidDAO;
 	private PricePaidLineParser pricePaidLineParser;
 	
-	private final boolean resolvePostcodes = true;
+	private final boolean resolvePostcodes = false;
 	
 	@Autowired
 	public PricePaidImportService(PricePaidFileFinder pricePaidFileFinder, PostcodeService postcodeService,
