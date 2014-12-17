@@ -38,7 +38,7 @@ public class ZooplaService {
 	
 	@Scheduled(fixedRate= 43200000)
 	public void query() throws JsonParseException, JsonMappingException, HttpNotFoundException, HttpBadRequestException, HttpForbiddenException, HttpFetchException, IOException {
-		final List<String> areasOfInterest = Lists.newArrayList("Hampton, London", "Twickenham, London");	
+		final List<String> areasOfInterest = Lists.newArrayList("Hampton, London", "Twickenham, London", "Bournemouth, Dorset", "Cambridge, Cambridgeshire");	
 		
 		log.info("Starting import for areas of interest: " + areasOfInterest);
 		for (String area : areasOfInterest) {
