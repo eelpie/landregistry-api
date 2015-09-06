@@ -5,15 +5,14 @@ import java.util.Date;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.Indexed;
+import org.mongodb.morphia.utils.IndexDirection;
 
 import uk.co.eelpieconsulting.common.geo.model.LatLong;
 import uk.co.eelpieconsulting.common.views.rss.RssFeedable;
 import uk.co.eelpieconsulting.landregistry.views.DateOnlySerializer;
-
-import com.google.code.morphia.annotations.Entity;
-import com.google.code.morphia.annotations.Id;
-import com.google.code.morphia.annotations.Indexed;
-import com.google.code.morphia.utils.IndexDirection;
 
 @Entity("pricepaid")
 public class PricePaid implements RssFeedable {

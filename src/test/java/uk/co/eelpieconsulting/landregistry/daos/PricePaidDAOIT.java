@@ -16,7 +16,7 @@ public class PricePaidDAOIT {
 	
 	@Before
 	public void setup() throws UnknownHostException, MongoException {
-		DataSourceFactory dataSourceFactory = new DataSourceFactory("ubuntu.local", "landreg");
+		DataStoreFactory dataSourceFactory = new DataStoreFactory("localhost", "landreg", "", "");
 		pricePaidDAO = new PricePaidDAO(dataSourceFactory);
 	}
 

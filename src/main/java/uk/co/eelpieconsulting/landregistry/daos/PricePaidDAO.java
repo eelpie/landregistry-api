@@ -4,14 +4,14 @@ import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.List;
 
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import uk.co.eelpieconsulting.common.geo.model.LatLong;
 import uk.co.eelpieconsulting.landregistry.model.PricePaid;
 
-import com.google.code.morphia.Datastore;
-import com.google.code.morphia.query.Query;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoException;
@@ -29,8 +29,8 @@ public class PricePaidDAO {
 	private final Datastore datastore;
 	
 	@Autowired
-	public PricePaidDAO(DataSourceFactory dataSourceFactory) throws UnknownHostException, MongoException {
-		this.datastore = dataSourceFactory.getDatastore();
+	public PricePaidDAO(DataStoreFactory dataStoreFactory) throws UnknownHostException, MongoException {
+		this.datastore = dataStoreFactory.getDs();
 	}
 	
 	public void save(PricePaid stop) {
@@ -62,7 +62,7 @@ public class PricePaidDAO {
 
 	public List<PricePaid> near(LatLong latLong, double radius) {
 	    final Query<PricePaid> query = datastore.createQuery(PricePaid.class).
-                field("location").within(latLong.getLatitude(), latLong.getLongitude(), radius).
+                field("location").near(latLong.getLatitude(), latLong.getLongitude(), radius).
                 order(DATE_DESCENDING);
 	    return query.asList();
 	}

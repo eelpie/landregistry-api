@@ -6,8 +6,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.co.eelpieconsulting.landregistry.model.PricePaid;
-
 import com.mongodb.MongoException;
 
 public class ZooplaDAOIT {
@@ -16,7 +14,7 @@ public class ZooplaDAOIT {
 	
 	@Before
 	public void setup() throws UnknownHostException, MongoException {
-		DataSourceFactory dataSourceFactory = new DataSourceFactory("ubuntu.local", "landreg");
+		DataStoreFactory dataSourceFactory = new DataStoreFactory("ubuntu.local", "landreg", "", "");
 		zooplaDAO = new ZooplaDAO(dataSourceFactory);
 	}
 

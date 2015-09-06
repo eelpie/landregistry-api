@@ -9,11 +9,6 @@
 
 	<repositories>
 		<repository>
-			<id>morphia.googlecode.com</id>
-			<name>Morphia Repo at Google Code</name>
-			<url>http://morphia.googlecode.com/svn/mavenrepo</url>
-		</repository>
-		<repository>
 			<id>spring-milestones</id>
 			<url>http://repo.springsource.org/milestone</url>
 		</repository>
@@ -163,13 +158,14 @@
 		<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongo-java-driver</artifactId>
-			<version>2.11.4</version>
+			<version>3.0.2</version>
+			<scope>compile</scope>
 		</dependency>
-
+		
 		<dependency>
-			<groupId>com.google.code.morphia</groupId>
+			<groupId>org.mongodb.morphia</groupId>
 			<artifactId>morphia</artifactId>
-			<version>0.98</version>
+			<version>1.0.1</version>
 		</dependency>
 
 		<dependency>
