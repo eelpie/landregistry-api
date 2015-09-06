@@ -32,10 +32,10 @@ public class DataStoreFactory {
 	private Datastore datastore;
 
 	@Autowired
-	public DataStoreFactory(@Value("${'mongoHost'}") String mongoHost,
-			@Value("${'mongoDatabase'}") String mongoDatabase,
-			@Value("${'mongoUser'}") String mongoUser,
-			@Value("${'mongoPassword'}") String mongoPassword) throws UnknownHostException, MongoException {
+	public DataStoreFactory(@Value("${mongoHost}") String mongoHost,
+			@Value("${mongoDatabase}") String mongoDatabase,
+			@Value("${mongoUser}") String mongoUser,
+			@Value("${mongoPassword}") String mongoPassword) throws UnknownHostException, MongoException {
 		this.serverAddress = new ServerAddress(mongoHost);
 		this.mongoDatabase = mongoDatabase;
 		
